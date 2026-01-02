@@ -7,3 +7,7 @@ frames
 output_bw.avi
 pipfile
 .venv/
+*.zip
+*.jpg
+*.jpeg
+*.png
