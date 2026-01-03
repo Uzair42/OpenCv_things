@@ -26,12 +26,12 @@ def get_color_bounds(color):
 def main():
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
-        print("❌ Could not open webcam.")
+        print("Could not open webcam.")
         return
 
-    print("➡️ Make sure the scene is empty, then press 'b' to capture background.")
-    print("➡️ Color options: 'r' for red, 'g' for green, 'b' for blue, 'y' for yellow, 'k' for black")
-    print("➡️ Press 'q' to quit.")
+    print(" Make sure the scene is empty, then press 'b' to capture background.")
+    print(" Color options: 'r' for red, 'g' for green, 'b' for blue, 'y' for yellow, 'k' for black")
+    print(" Press 'q' to quit.")
 
     background = None
     current_color = 'red'  # default color
@@ -49,9 +49,9 @@ def main():
             cv2.imshow("Color Invisibility Cloak", frame)
             key = cv2.waitKey(1) & 0xFF
             if key == ord('b'):
-                print("📸 Capturing background...")
+                print(" Capturing background...")
                 background = get_background(cap)
-                print("✅ Background captured.")
+                print(" Background captured.")
             elif key == ord('q'):
                 break
             continue
@@ -90,24 +90,24 @@ def main():
         if key == ord('q'):
             break
         elif key == ord('b'):
-            print("📸 Re-capturing background...")
+            print(" Re-capturing background...")
             background = get_background(cap)
-            print("✅ Background updated.")
+            print(" Background updated.")
         elif key == ord('r'):
             current_color = 'red'
-            print("🎨 Switched to red")
+            print(" Switched to red")
         elif key == ord('g'):
             current_color = 'green'
-            print("🎨 Switched to green")
+            print(" Switched to green")
         elif key == ord('b'):
             current_color = 'blue'
-            print("🎨 Switched to blue")
+            print(" Switched to blue")
         elif key == ord('y'):
             current_color = 'yellow'
-            print("🎨 Switched to yellow")
+            print(" Switched to yellow")
         elif key == ord('k'):
             current_color = 'black'
-            print("🎨 Switched to black")
+            print(" Switched to black")
 
     cap.release()
     cv2.destroyAllWindows()
