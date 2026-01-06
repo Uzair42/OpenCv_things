@@ -9,3 +9,5 @@ pipfile
 .venv/
 *.zip
 __pycache__/
+*.mp4
+*.avi
