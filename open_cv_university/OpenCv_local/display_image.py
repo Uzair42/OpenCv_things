@@ -16,7 +16,7 @@ cv2.waitKey(8000)
 cv2.destroyWindow(window1)
 
 # Use OpenCV imshow(), display for 8 sec
-window2 = cv2.namedWindow("w2")
+window2 = cv2.namedWindow("w2",cv2.WINDOW_NORMAL)
 cv2.imshow(window2, coke_img)
 cv2.waitKey(8000)
 cv2.destroyWindow(window2)

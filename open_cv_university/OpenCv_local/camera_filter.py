@@ -133,16 +133,16 @@ class ContourDetection:
    
 
 class EdgeDetection:
-   def __init__(self,frame):
-      self.frame=frame
+   
       
-   def cannyEdge(self):
-      return cv.Canny(self.frame,100,200)
-   def laplacianEdge(self):
-      return cv.Laplacian(self.frame,cv.CV_64F)
-   def sobelEdge(self):
-      sobelx = cv.Sobel(self.frame,cv.CV_64F,1,0,ksize=5)
-      sobely = cv.Sobel(self.frame,cv.CV_64F,0,1,ksize=5)
+      
+   def cannyEdge(frame):
+      return cv.Canny(frame,100,200)
+   def laplacianEdge(frame):
+      return cv.Laplacian(frame,0,ksize=(6,6))
+   def sobelEdge(frame):
+      sobelx = cv.Sobel(frame,cv.CV_64F,1,0,ksize=5)
+      sobely = cv.Sobel(frame,cv.CV_64F,0,1,ksize=5)
       return sobelx, sobely   
    
    
@@ -167,6 +167,8 @@ class cameraFilter:
             return  blurObj.GuassianBlur()
          elif self.filter_type==CANNY:
             return cv.Canny(frame,80,130)
+         elif self.filter_type==EDGE_DETECTION:
+            return cv.Laplacian(frame,1,ksize=17)
          
          else:
             return cv.flip(frame,1)
@@ -175,8 +177,12 @@ class cameraFilter:
 
 def main():
 
+  
    filter=cameraFilter(CANNY)
    filter_2=cameraFilter(BLUR)
+   edge_3=cameraFilter(EDGE_DETECTION)
+
+   objEdgeDetector=EdgeDetection()
    
    cap=cv.VideoCapture(0)
    if cap.isOpened:
@@ -195,6 +201,10 @@ def main():
       # Second Window , with filter object no 2
       filter_frame=filter_2.applyFilter(frame=frame)
       cv.imshow(str(filter_2.filter_type),filter_frame)
+
+      # 3rd windoe with edge detections
+      edge_frame=edge_3.applyFilter(frame)
+      cv.imshow("edge lap",edge_frame)
 
    cap.release()
    cv.destroyAllWindows()
