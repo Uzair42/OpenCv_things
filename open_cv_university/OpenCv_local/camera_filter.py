@@ -151,17 +151,11 @@ class EdgeDetection:
 
 
 class cameraFilter:
-      def __init__(self,cameraIndex=0,filter_type=NONE):
+      def __init__(self,filter_type=NONE):
          self.filter_type=filter_type
-         self.cameraIndex=cameraIndex
-         self.cap=cv.VideoCapture(self.cameraIndex)
-         if self.cap.isOpened:
-            print("Camera is opened")
+       
+         
 
-
-      def takeResourse(self,cap):
-         self.cap.release()
-         cv.destroyAllWindows()
 
       def applyFilter(self,frame):
 
@@ -179,19 +173,36 @@ class cameraFilter:
           
       
 
-def main(self,windowName):
-   cv.namedWindow(windowName,cv.WINDOW_NORMAL)
+def main():
 
-   while cv.waitKey(1) != 27 :
-   ret,frame=self.cap.read()
-   if not ret:
-      print("no frame ")
-   frame_edit=self.applyFilter(frame)
-   cv.imshow(windowName,frame_edit)
+   filter=cameraFilter(CANNY)
+   filter_2=cameraFilter(BLUR)
+   
+   cap=cv.VideoCapture(0)
+   if cap.isOpened:
+      print("Resource is availble ")
+   
+# ----------- using while loop , extract frame using single videocapture object and process frame for different purposes -------
+   while cv.waitKey(1) != 27:
+      ret , frame = cap.read()
+      if not ret:
+         print("no frame availbe")
+         break
+      # First Window , with filter object no 1
+      filter_frame=filter.applyFilter(frame=frame)
+      cv.imshow(str(filter.filter_type),filter_frame)
 
-   self.cap.release()
-   print("camera closed")
+      # Second Window , with filter object no 2
+      filter_frame=filter_2.applyFilter(frame=frame)
+      cv.imshow(str(filter_2.filter_type),filter_frame)
+
+   cap.release()
    cv.destroyAllWindows()
+      
+
+if __name__ == "__main__":
+   main()
+
 
 
 
