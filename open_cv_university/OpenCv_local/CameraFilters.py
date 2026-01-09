@@ -11,6 +11,7 @@ PREVIEW=1
 CANNY = 2
 BLUR=3
 FEATURES=4
+BILATERAL=5
 
 
 
@@ -31,31 +32,40 @@ if len(sys.argv)>1 :
 
 result=None
 image_filter=PREVIEW
+alive=True
 
+key = cv.waitKey(1)
 
 
 cap = cv.VideoCapture(s)
 if cap.isOpened:
     print("video capture is inialized ")
-key=cv.waitKey(1)
 
-while cv.waitKey(1) != 27:
+
+while alive:
 
     ret , frame= cap.read()
     if not ret:
         print("no frame found")
         break
-    print("waitkey is :",key)
+    # cv.imshow("orginalwindow ",frame)
     
     frame = cv.flip(frame, 1)
 
     if image_filter == PREVIEW:
         result = frame
+        print("preview")
     elif image_filter == CANNY:
         result = cv.Canny(frame, 80, 150)
+        print("Canny")
+    elif image_filter==BILATERAL:
+        print("Bilateral")
+        result=cv.bilateralFilter(frame, d=20, sigmaColor=20, sigmaSpace=50)
     elif image_filter == BLUR:
+        print("blur")
         result = cv.blur(frame, (13, 13))
     elif image_filter == FEATURES:
+        print("feature")
         result = frame
         frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
         corners = cv.goodFeaturesToTrack(frame_gray, **feature_params)
@@ -77,6 +87,8 @@ while cv.waitKey(1) != 27:
         image_filter = BLUR
     elif key == ord("F") or key == ord("f"):
         image_filter = FEATURES
+    elif key == ord("x") or key== ord("X"):
+        image_filter=BILATERAL
     elif key == ord("P") or key == ord("p"):
         image_filter = PREVIEW
 
