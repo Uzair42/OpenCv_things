@@ -32,24 +32,20 @@ class cvtColorClass:
     
 
 class blurClass:
+     
+      def simpleblure(frame):
+         return cv.blur(frame,(10,10))
       
-      def __init__(self,frame):
-         self.frame=frame
+      def GuassianBlur(frame):
+       return cv.GaussianBlur(frame,(7,7),2.0)
       
-
-      def simpleblure(self):
-         return cv.blur(self.frame,(10,10))
-      
-      def GuassianBlur(self):
-       return cv.GaussianBlur(self.frame,(7,7),2.0)
-      
-      def bilatralblur(self,frame):
+      def bilatralblur(frame):
          return cv.bilateralFilter(frame,0,10,10)
       
-      def medianblur(self,frame):
+      def medianblur(frame):
          return cv.medianBlur(frame,7)
       
-      def Sharpener(self,frame):
+      def Sharpener(frame):
          kernal = np.array([[0,-1,0],
                             [-1,5,-1],
                             [0,-1,0]])
@@ -73,24 +69,23 @@ class BitwiseOperations:
       return cv.bitwise_xor(self.frame)
    
 class MorphologicalOperations:
-   def __init__(self,frame):
-      self.frame=frame
+   
       
-   def erosion(self):
+   def erosion(frame):
       kernel = np.ones((5,5),np.uint8)
-      return cv.erode(self.frame,kernel,iterations=1)
+      return cv.erode(frame,kernel,iterations=1)
    
-   def dilation(self):
+   def dilation(frame):
       kernel = np.ones((5,5),np.uint8)
-      return cv.dilate(self.frame,kernel,iterations=1)
+      return cv.dilate(frame,kernel,iterations=1)
    
-   def opening(self):
+   def opening(frame):
       kernel = np.ones((5,5),np.uint8)
-      return cv.morphologyEx(self.frame,cv.MORPH_OPEN,kernel)
+      return cv.morphologyEx(frame,cv.MORPH_OPEN,kernel)
    
-   def closing(self):
+   def closing(frame):
       kernel = np.ones((5,5),np.uint8)
-      return cv.morphologyEx(self.frame,cv.MORPH_CLOSE,kernel)
+      return cv.morphologyEx(frame,cv.MORPH_CLOSE,kernel)
 
     
    
@@ -163,8 +158,8 @@ class cameraFilter:
          
          #for Blur
          if self.filter_type==BLUR:
-            blurObj=blurClass(frame)
-            return  blurObj.GuassianBlur()
+            blurObj=blurClass
+            return  blurObj.GuassianBlur(frame)
          elif self.filter_type==CANNY:
             return cv.Canny(frame,80,130)
          elif self.filter_type==EDGE_DETECTION:
@@ -177,12 +172,23 @@ class cameraFilter:
 
 def main():
 
+   
   
    filter=cameraFilter(CANNY)
    filter_2=cameraFilter(BLUR)
    edge_3=cameraFilter(EDGE_DETECTION)
 
-   objEdgeDetector=EdgeDetection()
+   # objEdgeDetector=EdgeDetection()
+
+   # objThresholding=Thresholding()
+
+   objBlur=blurClass
+
+   objmarphogy=MorphologicalOperations
+
+
+
+
    
    cap=cv.VideoCapture(0)
    if cap.isOpened:
@@ -205,6 +211,14 @@ def main():
       # 3rd windoe with edge detections
       edge_frame=edge_3.applyFilter(frame)
       cv.imshow("edge lap",edge_frame)
+
+      # 4th Window Threshold
+      sharperner_frame=objBlur.Sharpener(frame)
+      cv.imshow("Thresold ",sharperner_frame)
+
+      # 5th Window Threshold
+      objmarphogy_frame=objmarphogy.dilation(frame)
+      cv.imshow("marhpholgy ",objmarphogy_frame)
 
    cap.release()
    cv.destroyAllWindows()
