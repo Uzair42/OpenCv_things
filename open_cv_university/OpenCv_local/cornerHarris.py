@@ -14,6 +14,7 @@ while True:
         print("Can't receive frame (stream end?). Exiting ...")
         break
     
+    
     # Optional: Check if frame is entirely black (e.g. if camera is slow to start)
     # if np.mean(frame) < 1.0: 
     #     continue
@@ -24,7 +25,9 @@ while True:
 
     # --- 3. Apply Harris Corner Detector ---
     # The parameters in your code (21, 3, 0.04) are valid for blockSize, ksize, and k respectively.
-    dst = cv.cornerHarris(gray, 21, 3, 0.04)
+    dst = cv.cornerHarris(gray, 21, 3, 0.4)
+
+    
 
     # --- 4. Dilate the result to emphasize corners (optional but helpful) ---
     dst = cv.dilate(dst, None)
@@ -37,6 +40,12 @@ while True:
     # --- 6. Display the result ---
     cv.imshow('Harris Corners', frame)
 
+    
+
+
+
+
+    
     # --- 7. Break the loop when 'q' is pressed ---
     if cv.waitKey(1) & 0xFF == ord('q'):
         break
